@@ -1,0 +1,28 @@
+name: Auto Commit Every 12 Hours
+
+on:
+  schedule:
+    - cron: "0 */12 * * *"  # Toutes les 12 heures
+  workflow_dispatch:  # Permet un déclenchement manuel
+
+jobs:
+  update_repo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Up Git User
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+
+      - name: Make Unique Changes
+        run: |
+          echo "Mise à jour unique : $(date +'%Y-%m-%d %H:%M:%S')" > update_$(date +'%Y%m%d%H%M%S').txt
+          git add .
+          git commit -m "Auto-update: $(date +'%Y-%m-%d %H:%M:%S')"
+
+      - name: Push Changes
+        run: git push
+
