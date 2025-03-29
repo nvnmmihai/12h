@@ -24,5 +24,7 @@ jobs:
           git commit -m "Auto-update: $(date +'%Y-%m-%d %H:%M:%S')"
 
       - name: Push Changes
-        run: git push
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git push
 
